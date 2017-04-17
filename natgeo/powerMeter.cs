@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace natgeo
 {
-    public partial class powerMeter : UserControl
+    public partial class powerMeter : UserControl, IDisposable
     {
         private int _value;
         private int _maxValue;
@@ -100,6 +100,17 @@ namespace natgeo
                 if (yellowFGSize == yellowSize)
                     e.Graphics.FillRectangle(fgGreen, redSize + yellowFGSize, 0, greenFGSize, this.Height);
             }
+        }
+
+        public new void Dispose()
+        {
+            bgRed.Dispose();
+            bgYellow.Dispose();
+            bgGreen.Dispose();
+
+            fgRed.Dispose();
+            fgYellow.Dispose();
+            fgGreen.Dispose();
         }
     }
 }

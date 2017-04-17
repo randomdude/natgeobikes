@@ -1,2 +1,14 @@
 natgeo.sln.DotSettings.user
 *.suo
+natgeo/bin/Debug/natgeo.exe
+*.pdb
+natgeo/bin/Debug/natgeo.vshost.exe
+*.manifest
+*.cache
+natgeo/obj/x86/Debug/natgeo.csproj.FileListAbsolute.txt
+natgeo/obj/x86/Debug/natgeo.cycler.resources
+natgeo/obj/x86/Debug/natgeo.exe
+natgeo/obj/x86/Debug/natgeo.powerMeter.resources
+natgeo/obj/x86/Debug/natgeo.Form1.resources
+natgeo/obj/x86/Debug/natgeo.Properties.Resources.resources
+*.dll
