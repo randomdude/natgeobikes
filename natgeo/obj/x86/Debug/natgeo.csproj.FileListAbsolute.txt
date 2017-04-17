@@ -1,0 +1,10 @@
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\obj\x86\Debug\natgeo.csprojResolveAssemblyReference.cache
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\obj\x86\Debug\natgeo.cycler.resources
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\obj\x86\Debug\natgeo.Form1.resources
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\obj\x86\Debug\natgeo.powerMeter.resources
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\obj\x86\Debug\natgeo.Properties.Resources.resources
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\obj\x86\Debug\natgeo.csproj.GenerateResource.Cache
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\bin\Debug\natgeo.exe
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\bin\Debug\natgeo.pdb
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\obj\x86\Debug\natgeo.exe
+C:\code\natgeo\natgeo-git\natgeobikes\natgeo\obj\x86\Debug\natgeo.pdb
