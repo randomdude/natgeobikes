@@ -23,17 +23,10 @@ namespace natgeo
         {
             InitializeComponent();
 
-            // Construct our bicycles, which will configure the LJ ready for use.
-            bicycles = new[]
-            {
-                new bicycle(0, "320066910", 0),
-                new bicycle(1, "320066910", 1),
-                new bicycle(2, "320066910", 2),
-                new bicycle(3, "320066910", 3),
-                new bicycle(4, "320066910", 4),
-                new bicycle(5, "320066910", 5),
-                new bicycle(6, "320066910", 6)
-            };
+            // Load our bicycles from our application config (user.config), and then init them, which will configure the LJ ready for use.
+            bicycles = new bikeSettings().bikes.ToArray();
+            foreach (bicycle bike in bicycles)
+                bike.postXMLDeserialisation();
 
             // Wire up events
             foreach (bicycle bike in bicycles)
