@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This file goes in C:\Users\<username>\AppData\Local\Microsoft\natgeo*\1.0.0.0\user.config -->
+
+<configuration>
+    <configSections>
+        <sectionGroup name="userSettings">
+            <section name="natgeo.bikeSettings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
+        </sectionGroup>
+    </configSections>
+    <userSettings>
+        <natgeo.bikeSettings>
+            <setting name="bikes" serializeAs="Xml">
+                <value>
+                    <ArrayOfBicycle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                        <bicycle>
+                            <labjackSerial>320066910</labjackSerial>
+                            <FIOChannel>0</FIOChannel>
+                            <bikeIndex>1</bikeIndex>
+                        </bicycle>
+                        <bicycle>
+                            <labjackSerial>320066910</labjackSerial>
+                            <FIOChannel>1</FIOChannel>
+                            <bikeIndex>2</bikeIndex>
+                        </bicycle>
+                        <bicycle>
+                            <labjackSerial>320066910</labjackSerial>
+                            <FIOChannel>2</FIOChannel>
+                            <bikeIndex>3</bikeIndex>
+                        </bicycle>
+                        <bicycle>
+                            <labjackSerial>320066910</labjackSerial>
+                            <FIOChannel>3</FIOChannel>
+                            <bikeIndex>4</bikeIndex>
+                        </bicycle>
+                        <bicycle>
+                            <labjackSerial>320066910</labjackSerial>
+                            <FIOChannel>4</FIOChannel>
+                            <bikeIndex>5</bikeIndex>
+                        </bicycle>
+                        <bicycle>
+                            <labjackSerial>320066910</labjackSerial>
+                            <FIOChannel>5</FIOChannel>
+                            <bikeIndex>6</bikeIndex>
+                        </bicycle>
+                        <bicycle>
+                            <labjackSerial>320066910</labjackSerial>
+                            <FIOChannel>6</FIOChannel>
+                            <bikeIndex>7</bikeIndex>
+                        </bicycle>
+                    </ArrayOfBicycle>
+                </value>
+            </setting>
+        </natgeo.bikeSettings>
+    </userSettings>
+</configuration>
