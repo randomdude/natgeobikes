@@ -51,7 +51,7 @@ namespace natgeo
             resizeCyclistControls();
 
             // Now the bicycles are configured, we can start the timer, which will poll and update controls.
-            tmrPollLJ.Enabled = true;
+            //tmrPollLJ.Enabled = true;
         }
 
         private void resizeCyclistControls()
