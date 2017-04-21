@@ -73,6 +73,12 @@
       <DependentUpon>bikeDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="bikeSettings.cs" />
+    <Compile Include="ctlBargraph.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlBargraph.Designer.cs">
+      <DependentUpon>ctlBargraph.cs</DependentUpon>
+    </Compile>
     <Compile Include="cycler.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -104,6 +110,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="bikeDetail.resx">
       <DependentUpon>bikeDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlBargraph.resx">
+      <DependentUpon>ctlBargraph.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="cycler.resx">
       <DependentUpon>cycler.cs</DependentUpon>

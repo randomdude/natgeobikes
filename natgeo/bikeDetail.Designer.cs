@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtRawValue = new System.Windows.Forms.TextBox();
-            this.txtVoltageOffset = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.barValOverride = new System.Windows.Forms.TrackBar();
             this.txtVAndP = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.barValOverride = new System.Windows.Forms.TrackBar();
+            this.txtVoltageOffset = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtRawValue = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barValOverride)).BeginInit();
             this.SuspendLayout();
@@ -58,39 +58,15 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // label1
+            // barValOverride
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Raw value";
-            // 
-            // txtRawValue
-            // 
-            this.txtRawValue.Location = new System.Drawing.Point(67, 13);
-            this.txtRawValue.Name = "txtRawValue";
-            this.txtRawValue.ReadOnly = true;
-            this.txtRawValue.Size = new System.Drawing.Size(100, 20);
-            this.txtRawValue.TabIndex = 1;
-            // 
-            // txtVoltageOffset
-            // 
-            this.txtVoltageOffset.Location = new System.Drawing.Point(67, 39);
-            this.txtVoltageOffset.Name = "txtVoltageOffset";
-            this.txtVoltageOffset.Size = new System.Drawing.Size(100, 20);
-            this.txtVoltageOffset.TabIndex = 3;
-            this.txtVoltageOffset.TextChanged += new System.EventHandler(this.txtVoltageOffset_TextChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 42);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "DC offset";
+            this.barValOverride.Location = new System.Drawing.Point(175, 39);
+            this.barValOverride.Maximum = 150;
+            this.barValOverride.Name = "barValOverride";
+            this.barValOverride.Size = new System.Drawing.Size(205, 42);
+            this.barValOverride.TabIndex = 6;
+            this.barValOverride.TickFrequency = 10;
+            this.barValOverride.Scroll += new System.EventHandler(this.barValOverride_Scroll);
             // 
             // txtVAndP
             // 
@@ -109,14 +85,40 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Calculated V and P";
             // 
-            // barValOverride
+            // txtVoltageOffset
             // 
-            this.barValOverride.Location = new System.Drawing.Point(175, 39);
-            this.barValOverride.Maximum = 15;
-            this.barValOverride.Name = "barValOverride";
-            this.barValOverride.Size = new System.Drawing.Size(205, 42);
-            this.barValOverride.TabIndex = 6;
-            this.barValOverride.Scroll += new System.EventHandler(this.barValOverride_Scroll);
+            this.txtVoltageOffset.Location = new System.Drawing.Point(67, 39);
+            this.txtVoltageOffset.Name = "txtVoltageOffset";
+            this.txtVoltageOffset.Size = new System.Drawing.Size(100, 20);
+            this.txtVoltageOffset.TabIndex = 3;
+            this.txtVoltageOffset.TextChanged += new System.EventHandler(this.txtVoltageOffset_TextChanged);
+            this.txtVoltageOffset.Enter += new System.EventHandler(this.txtVoltageOffset_Enter);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 42);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(51, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "DC offset";
+            // 
+            // txtRawValue
+            // 
+            this.txtRawValue.Location = new System.Drawing.Point(67, 13);
+            this.txtRawValue.Name = "txtRawValue";
+            this.txtRawValue.ReadOnly = true;
+            this.txtRawValue.Size = new System.Drawing.Size(100, 20);
+            this.txtRawValue.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Raw value";
             // 
             // bikeDetail
             // 

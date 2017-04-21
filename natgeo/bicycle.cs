@@ -12,12 +12,12 @@ namespace natgeo
         /// <summary>
         /// Configure this according to the steady-state voltage for zero pedal power
         /// </summary>
-        private const double voltageOffset = 1.8;
+        public double voltageOffset = 1.8;
 
         /// <summary>
         /// The amount of voltage that 1A of pedal power represents in our raw reading
         /// </summary>
-        private const double voltagePerAmpere = 75 / voltageOffset;
+        public double voltagePerAmpere;
 
         /// <summary>
         /// Serial number of the labjack which this bike is connected to 
@@ -60,9 +60,31 @@ namespace natgeo
         [XmlIgnore]
         public double lastPowerReadingA;
 
+        /// <summary>
+        /// The calculated volatage that corresponds to lastPowerReadingA
+        /// </summary>
+        [XmlIgnore]
+        public double lastPowerReadingV;
+
+        /// <summary>
+        /// The last reading which we acquired from the labjack, raw and unprocessed 
+        /// </summary>
+        [XmlIgnore]
+        public double lastRawValue;
+
+        /// <summary>
+        /// The calculated power that corresponds to lastPowerReadingA and lastPowerReadingV.
+        /// </summary>
+        [XmlIgnore]
+        public double lastPowerReadingW
+        {
+            get { return lastPowerReadingA * lastPowerReadingV; }
+        }
+
         public bicycle()
         {
             // for XML de/ser
+            voltagePerAmpere = 75 / voltageOffset;
         }
 
         public bicycle(int newBikeIndex, string newLabjackSerial, int newFIOChannel)
@@ -70,17 +92,29 @@ namespace natgeo
             bikeIndex = newBikeIndex;
             labjackSerial = newLabjackSerial;
             FIOChannel = newFIOChannel;
+            voltagePerAmpere = 75 / voltageOffset;
 
             postXMLDeserialisation();
         }
 
         public void onRawData(double newVal)
         {
+            lastRawValue = newVal;
+
             // Offset and scale our raw value to get a nice amperes value
             lastPowerReadingA = (newVal - voltageOffset) * voltagePerAmpere;
 
-            // And allow either direction of current (just in case!)
+            // And allow either direction of current (just in case a bike is wired up wrongly!)
             lastPowerReadingA = Math.Abs(lastPowerReadingA);
+
+            // Scale by this formula to estimate voltage output of dynamo
+            // FIXME: make this subect to A not V
+            /*
+            lastPowerReadingV = (0.3422f * Math.Pow(lastPowerReadingA, 4)) -
+                                (19.805f * Math.Pow(lastPowerReadingA, 3)) +
+                                (492.22f * Math.Pow(lastPowerReadingA, 2)) - 
+                                (4125.9f * lastPowerReadingA) + 14840;*/
+            lastPowerReadingV = lastPowerReadingA;
 
             // Debug.WriteLine("Bike " + bikeIndex + " raw val " + newVal + " scaled to " + lastPowerReadingA + " A");
 
@@ -89,6 +123,8 @@ namespace natgeo
 
         public void postXMLDeserialisation()
         {
+            // Comment this out if you have a real LabJack
+            return;
             if (LJDeviceHandlesBySerial.ContainsKey(labjackSerial))
             {
                 labjackHandle = LJDeviceHandlesBySerial[labjackSerial];

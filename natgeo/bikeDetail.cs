@@ -29,10 +29,14 @@ namespace natgeo
 
         private void barValOverride_Scroll(object sender, EventArgs e)
         {
-            onOverrideValueChange.Invoke(barValOverride.Value / 5.0f);
+            onOverrideValueChange.Invoke(barValOverride.Value / 50.0f);
         }
 
         private void txtVoltageOffset_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void txtVoltageOffset_Enter(object sender, EventArgs e)
         {
             float res;
             if (!float.TryParse(txtVoltageOffset.Text, out res))

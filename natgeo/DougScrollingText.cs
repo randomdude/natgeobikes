@@ -1,157 +1,104 @@
 using System;
-using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 using System.IO;
+using System.Windows.Forms;
 
 namespace DougScrollingText
 {
     /// <summary>
     /// Summary description for DougScrollingTextCtrl.
     /// </summary>
-    
-    /*//////////////////////////////////////////////////////////////////////////////
-    //
-    // Function: class DougScrollingTextCtrl.
-    //
-    // By: Doug 
-    //
-    // Date: 2/27/03
-    //
-    // Description: Create the control and derive it from System.Windows.Forms.Control.
-    //
-    /////////////////////////////////////////////////////////////////////////////*/ 
-    //
-    public class DougScrollingTextCtrl : System.Windows.Forms.Control
+    public class DougScrollingTextCtrl : Control
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.Container components = null;
+        private Container components = null;
 
-        private Color m_Color1 = Color.Black;  // First default color.
-        private Color m_Color2 = Color.Gold;   // Second default color.
-        private Font m_MyFont;   // For the font.
+        /// <summary>
+        /// Timer for text animation
+        /// </summary>
+        private readonly Timer _timer;
 
-        protected Timer m_Timer;             // Timer for text animation.
+        /// <summary>
+        /// Text to be displayed in the control
+        /// </summary>
+        private string sScrollText;
 
-        protected string sScrollText = null;   // Text to be displayed in the control.
+        /// <summary>
+        /// The size, in pixels, of the entire text string, as rendered
+        /// </summary>
+        private SizeF textSize;
+
+        /// <summary>
+        /// This will notify us when our input file has changed
+        /// </summary>
+        private readonly FileSystemWatcher fileWatcher;
         
+        /// <summary>
+        /// How far through the message we are
+        /// </summary>
+        private int scrollOffsetPixels = 0;
+
         /// <summary>
         /// Add member variables.
         /// </summary>
-
-        /*//////////////////////////////////////////////////////////////////////////////
-        //
-        // Function: public DougScrollingTextCtrl()
-        //
-        // By: Doug 
-        //
-        // Date: 2/27/03
-        //
-        // Description: Constructor.
-        //
-        /////////////////////////////////////////////////////////////////////////////*/ 
-        //
         public DougScrollingTextCtrl()
         {
-            m_Timer = new Timer();
+            _timer = new Timer();
 
             // Set the timer speed and properties.
-            m_Timer.Interval = 250;
-            m_Timer.Enabled = true;
-            m_Timer.Tick += new EventHandler( Animate );
+            _timer.Interval = 100;
+            _timer.Tick += Animate;
+            _timer.Enabled = true;
 
-            FileSystemWatcher fileWatcher = new FileSystemWatcher();
-            fileWatcher.Path = Environment.CurrentDirectory;
-            fileWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-           | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            fileWatcher.Filter = "*.txt";
-            fileWatcher.Changed += new FileSystemEventHandler(m_updateScrollingMessage);
+            fileWatcher = new FileSystemWatcher
+            {
+                Path = Environment.CurrentDirectory,
+                // FIXME: are all these flags neccessary?
+                NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                Filter = "*.txt"
+            };
+            fileWatcher.Changed += m_updateScrollingMessage;
             // Begin watching.
             fileWatcher.EnableRaisingEvents = true;
         }
 
-        // Add a color property.
-        public Color DougScrollingTextColor1
-        {
-            get { return m_Color1; }
-            set 
-            {
-                m_Color1 = value; 
-                Invalidate();
-            }
-        }
-
-        // Add a color property.
-        public Color DougScrollingTextColor2
-        {
-            get { return m_Color2; }
-            set 
-            {
-                m_Color2 = value; 
-                Invalidate();
-            }
-        }
-
-        /*//////////////////////////////////////////////////////////////////////////////
-        //
-        // Function: Animate( object sender, EventArgs e )
-        //
-        // By: Doug 
-        //
-        // Date: 2/27/03
-        //
-        // Description: Sets up the animation of the text.
-        //
-        /////////////////////////////////////////////////////////////////////////////*/ 
-        //
+        /// <summary>
+        /// Sets up the animation of the text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Animate( object sender, EventArgs e )
         {
-            // sScrollText string is from the Text property, add 4 spaces after the string so everything is not bunche together.
-            if( sScrollText == null )
+            if (sScrollText == null)
             {
-                sScrollText = Text + "    ";
+                scrollOffsetPixels = -ClientRectangle.Width;
+                sScrollText = Text;
+                using (Font myFont = new Font(Font.Name, (ClientRectangle.Height * 3) / 4, Font.Style, GraphicsUnit.Pixel))
+                {
+                    using (BufferedGraphics gfx = BufferedGraphicsManager.Current.Allocate(this.CreateGraphics(), ClientRectangle))
+                    {
+                        textSize = gfx.Graphics.MeasureString(sScrollText, myFont);
+                    }
+                }
             }
 
-            // Scroll text by triming one character at a time from the left, then adding that character to the right side of the control to make it look like scrolling text.
-            sScrollText = sScrollText.Substring( 1, sScrollText.Length-1 ) + sScrollText.Substring( 0, 1 );
+            scrollOffsetPixels += 10;
+
+            // Reset the scroller when the text is not visible
+            if (scrollOffsetPixels > textSize.Width)
+                scrollOffsetPixels = -ClientRectangle.Width;
             
-            // Call Invalidate() to tell the windows form that our control needs to be repainted.
             Invalidate();
         }
-
-        /*//////////////////////////////////////////////////////////////////////////////
-        //
-        // Function: StartStop( object sender, EventArgs e )
-        //
-        // By: Doug 
-        //
-        // Date: 2/27/03
-        //
-        // Description: Start and stop the timer.
-        //
-        /////////////////////////////////////////////////////////////////////////////*/ 
-        //
-        void StartStop( object sender, EventArgs e )
-        {
-            m_Timer.Enabled = !m_Timer.Enabled;
-        }
-
-        /*//////////////////////////////////////////////////////////////////////////////
-        //
-        // Function: protected override void OnTextChanged( EventArgs e )
-        //
-        // By: Doug 
-        //
-        // Date: 2/27/03
-        //
-        // Description: If/when the string text is changed, I need to update the sScrollText string.
-        //
-        /////////////////////////////////////////////////////////////////////////////*/ 
-        //
+        
+        /// <summary>
+        /// If/when the string text is changed, I need to update the sScrollText string
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnTextChanged( EventArgs e )
         {
             sScrollText = null;
@@ -159,102 +106,75 @@ namespace DougScrollingText
             base.OnTextChanged( e );
         }
 
-        /*//////////////////////////////////////////////////////////////////////////////
-        //
-        // Function: protected override void OnClick( EventArgs e )
-        //
-        // By: Doug 
-        //
-        // Date: 2/27/03
-        //
-        // Description: Handle the click event of the DougScrollingTextCtrl.
-        //
-        /////////////////////////////////////////////////////////////////////////////*/ 
-        //
-        protected override void OnClick( EventArgs e )
+        public void SetText(string newText)
         {
-            m_Timer.Enabled = !m_Timer.Enabled;
-
-            base.OnClick( e );
-        }
-        delegate void SetTextCallback(string text);
-
-        private void SetText(string text)
-        {
-            // InvokeRequired required compares the thread ID of the
-            // calling thread to the thread ID of the creating thread.
-            // If these threads are different, it returns true.
-            if (this.InvokeRequired)
+            // Updates should be done from the UI thread
+            if (InvokeRequired)
             {
-                SetTextCallback d = new SetTextCallback(SetText);
-                this.Invoke(d, new object[] { text });
+                Invoke(new Action<string>(SetText), newText);
+                return;
             }
-            else
-            {
-                this.Text = text;
-            }
+
+            Text = newText;
         }
+
         private void m_updateScrollingMessage(object sender, FileSystemEventArgs e)
         {
-            StreamReader sr = null;
-            try
+            using (StreamReader sr = new StreamReader("ReadMessages.txt"))
             {
-                sr = new StreamReader("ReadMessages.txt");
                 while (!sr.EndOfStream)
                 {
-                    string line = sr.ReadToEnd();
-                    SetText(line);
-                    //this.Text = line;
+                    SetText(sr.ReadToEnd());
                 }
-            }
-            catch (Exception ex)
-            {
-                //For debug
-            }
-            finally
-            {
-                if (sr != null)
-                    sr.Close();
             }
         }
 
-
-        /*public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            // Since the m_Timer hasn't been added to a collection (because
-            // we don’t have one!) we have to dispose it manually.
-            m_Timer.Dispose();
-            base.Dispose();
-        }*/
+            if (disposing)
+            {
+                fileWatcher.Dispose();
+                _timer.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-        /*//////////////////////////////////////////////////////////////////////////////
-        //
-        // Function: protected override void OnPaint( PaintEventArgs pe )
-        //
-        // By: Doug 
-        //
-        // Date: 2/27/03
-        //
-        // Description: Paint the DougScrollingTextCtrl.
-        //
-        /////////////////////////////////////////////////////////////////////////////*/
-        //
+        /// <summary>
+        /// Paint the DougScrollingTextCtrl
+        /// </summary>
+        /// <param name="pe"></param>
         protected override void OnPaint( PaintEventArgs pe )
         {
-            // This is a fancy brush that draws graded colors.
-            Brush MyBrush = new System.Drawing.Drawing2D.LinearGradientBrush( ClientRectangle, m_Color1, m_Color2, 10 );
+            if (textSize.Height == 0.0f)
+                return;
 
-            // Get the font and use it to draw text in the control.  Resize to the height of the control if possible.
-            m_MyFont = new Font( Font.Name, (Height*3)/4, Font.Style, GraphicsUnit.Pixel );
+            using (GraphicsPath path = new GraphicsPath())
+            {
+                path.AddRectangle(ClientRectangle);
 
-            // Draw the text string in the control.
-            pe.Graphics.DrawString( sScrollText, m_MyFont, MyBrush, 0, 0 );
-
-            base.OnPaint (pe);
-
-            // Clean up variables..
-            MyBrush.Dispose(); 
-            m_MyFont.Dispose();
+                using (SolidBrush bgBrush = new SolidBrush(Color.White))
+                {
+                    using (PathGradientBrush myBrush = new PathGradientBrush(path))
+                    {
+                        myBrush.CenterColor = ForeColor;
+                        myBrush.SurroundColors = new Color[] {Color.Transparent };
+                        // Allow some space for descenders.
+                        using (Font myFont = new Font(Font.Name, textSize.Height * 0.75f , Font.Style, GraphicsUnit.Pixel))
+                        {
+                            using (Graphics dblBuf = CreateGraphics())
+                            {
+                                using (BufferedGraphics gfx = BufferedGraphicsManager.Current.Allocate(dblBuf, ClientRectangle))
+                                {
+                                    gfx.Graphics.FillRectangle(bgBrush, ClientRectangle);
+                                    gfx.Graphics.DrawString(sScrollText, myFont, myBrush, -scrollOffsetPixels, 0);
+                                    gfx.Render(pe.Graphics);
+                                }
+                            }
+                            base.OnPaint(pe);
+                        }
+                    }
+                }
+            }
         }
     }
 }

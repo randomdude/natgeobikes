@@ -28,41 +28,32 @@ namespace natgeo
 
             // Load our bicycles from our application config (user.config), and then init them, which will configure the LJ ready for use.
             bicycles = new bikeSettings().bikes.ToArray();
+            int n = 0;
             foreach (bicycle bike in bicycles)
+            {
+                bike.bikeIndex = n++;     // FIXMEEEE
                 bike.postXMLDeserialisation();
+            }
 
             // Wire up events
             foreach (bicycle bike in bicycles)
                 bike.onNewPowerReading = updateBikeView;
 
-            // init global controls
-            powerMeter1.maxValue = 75 * bicycles.Length;
-
             foreach (bicycle bike in bicycles)
             {
-                cycler newCyc = new cycler();
-                newCyc.Visible = true;
-                newCyc.cyclistPowerSource = bike;
-                newCyc.BorderStyle = BorderStyle.FixedSingle;
-                newCyc.ForeColor = Color.White;
-                bike.onNewPowerReading += newCyc.displayBicycle;
-
-                bicycleControls.Add(newCyc);
-                this.Controls.Add(newCyc);
-
                 powerMeterForm.addBicycle(bike);
+                ctlBargraph1.addBicycle(bike);
             }
 
-            resizeCyclistControls();
-
             // Now the bicycles are configured, we can start the timer, which will poll and update controls.
+            // Comment this out if you have no LabJack
             //tmrPollLJ.Enabled = true;
         }
 
         private void resizeCyclistControls()
         {
             // Make a new cyclist control for each bicycle
-            int topOfCyclistArea = powerMeter1.Top + powerMeter1.Height;
+            int topOfCyclistArea = dougScrollingTextCtrl1.Height + dougScrollingTextCtrl1.Top; //powerMeter1.Top + powerMeter1.Height;
             int controlCountX = 4;
             int controlCountY = (int) Math.Ceiling((double)bicycleControls.Count / (double)controlCountX);
             int gridPosX = 0;
@@ -107,7 +98,7 @@ namespace natgeo
             // Update total power
             double totalPower = bicycles.Sum(x => x.lastPowerReadingW);
             lblTotalCurrent.Text = "Total power: " + (int)totalPower +" W";
-            powerMeter1.value = (int)totalPower;
+            //powerMeter1.value = (int)totalPower;
 
             // update the fastest bicycle
             double highest = bicycles.Max(x => x.lastPowerReadingA);
@@ -165,7 +156,12 @@ namespace natgeo
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            resizeCyclistControls();
+            //resizeCyclistControls();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
