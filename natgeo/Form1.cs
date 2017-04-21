@@ -28,6 +28,16 @@ namespace natgeo
 
             // Load our bicycles from our application config (user.config), and then init them, which will configure the LJ ready for use.
             bicycles = new bikeSettings().bikes.ToArray();
+            if (bicycles.Length == 0)
+            {
+                int bikeCount = 20;
+                bicycles = new bicycle[bikeCount];
+                for (int index = 0; index < bikeCount; index++)
+                {
+                    bicycles[index] = new bicycle(index + 1, "Test", 0);
+                }
+            }
+
             int n = 0;
             foreach (bicycle bike in bicycles)
             {

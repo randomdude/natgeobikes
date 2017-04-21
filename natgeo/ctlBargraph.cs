@@ -39,10 +39,11 @@ namespace natgeo
 
             int barSpacing = ClientRectangle.Width / bikes.Count;
             int barWidth = barSpacing;
-            int barMaxHeight = ClientRectangle.Height;
+            int bottomMargin = 40;
+            int barMaxHeight = ClientRectangle.Height - bottomMargin;
 
             int barLeft = 0;
-            using (SolidBrush textBrush = new SolidBrush(Color.DarkGray))
+            using (SolidBrush textBrush = new SolidBrush(Color.Black))
             {
                 foreach (bicycle thisBike in bikes.OrderBy(x => x.bikeIndex))
                 {
@@ -51,23 +52,31 @@ namespace natgeo
                         switch (thisBike.bikeIndex % 3)
                         {
                             case 0:
-                                barBrush.Color = Color.DeepSkyBlue;
-                                break;
+                                {
+                                    barBrush.Color = System.Drawing.ColorTranslator.FromHtml("#20A4F3");
+                                    break;
+                                }
                             case 1:
-                                barBrush.Color = Color.BlueViolet;
-                                break;
+                                {
+                                    barBrush.Color = System.Drawing.ColorTranslator.FromHtml("#2EC4B6");
+                                    break;
+                                }
                             case 2:
-                                barBrush.Color = Color.DarkRed;
-                                break;
+                                {
+                                    barBrush.Color = System.Drawing.ColorTranslator.FromHtml("#FF3366");
+                                    break;
+                                }
                         }
                         int barHeight = (int) (barMaxHeight * (thisBike.lastPowerReadingW / 500));
-                        int barTop = ClientRectangle.Height - barHeight - 1;
+                        int barTop = ClientRectangle.Height - barHeight - 1 - bottomMargin;
                         e.Graphics.FillRectangle(barBrush, barLeft, barTop, barWidth, barHeight);
 
                         // Now draw the label on each bar. Take care to clamp so it is always visible, even when the bar is tiny or huge.
                         string txtlabel = thisBike.lastPowerReadingW.ToString("F0");
                         if (txtlabel.Length == 0)
                             txtlabel = "0";
+                        Font labelFont = new Font(Font.Name, 30.0f , Font.Style, GraphicsUnit.Pixel);
+
                         using (Font myFont = new Font(Font.Name, (barWidth * 0.75f) / txtlabel.Length, Font.Style, GraphicsUnit.Pixel))
                         {
                             SizeF textSize = e.Graphics.MeasureString(txtlabel, myFont);
@@ -79,7 +88,7 @@ namespace natgeo
                                 barTop = (int) barMaxHeight;
 
                             e.Graphics.DrawString(txtlabel, myFont, textBrush, barLeft, barTop);
-
+                            e.Graphics.DrawString(thisBike.bikeIndex.ToString() , labelFont, textBrush, barLeft, barMaxHeight+0);
                             barLeft += barSpacing;
                         }
                     }
