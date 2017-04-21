@@ -66,13 +66,16 @@
             // 
             // dougScrollingTextCtrl1
             // 
-            this.dougScrollingTextCtrl1.DougScrollingTextColor1 = System.Drawing.Color.Black;
-            this.dougScrollingTextCtrl1.DougScrollingTextColor2 = System.Drawing.Color.Gold;
+            this.dougScrollingTextCtrl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dougScrollingTextCtrl1.BackColor = System.Drawing.Color.Black;
+            this.dougScrollingTextCtrl1.ForeColor = System.Drawing.Color.Gold;
             this.dougScrollingTextCtrl1.Location = new System.Drawing.Point(12, 12);
             this.dougScrollingTextCtrl1.Name = "dougScrollingTextCtrl1";
-            this.dougScrollingTextCtrl1.Size = new System.Drawing.Size(933, 35);
+            this.dougScrollingTextCtrl1.Size = new System.Drawing.Size(935, 35);
             this.dougScrollingTextCtrl1.TabIndex = 2;
-            this.dougScrollingTextCtrl1.Text = "National Geographic Chanel Earth day Run 2017";
+            this.dougScrollingTextCtrl1.Text = "National Geographic Channel Earth day Run 2017";
             // 
             // Form1
             // 
