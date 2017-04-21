@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using LabJack.LabJackUD;
 
@@ -18,6 +19,8 @@ namespace natgeo
         /// The controls displaying individual statistics
         /// </summary>
         private readonly List<cycler> bicycleControls = new List<cycler>();
+
+        readonly frmUI powerMeterForm = new frmUI();
 
         public Form1()
         {
@@ -46,6 +49,8 @@ namespace natgeo
 
                 bicycleControls.Add(newCyc);
                 this.Controls.Add(newCyc);
+
+                powerMeterForm.addBicycle(bike);
             }
 
             resizeCyclistControls();
@@ -100,9 +105,9 @@ namespace natgeo
         private void updateBikeView(bicycle sender, DateTime timestamp)
         {
             // Update total power
-            double totalCurrent = bicycles.Sum(x => x.lastPowerReadingA);
-            lblTotalCurrent.Text = "Total power: " + (int)totalCurrent +" A";
-            powerMeter1.value = (int)totalCurrent;
+            double totalPower = bicycles.Sum(x => x.lastPowerReadingW);
+            lblTotalCurrent.Text = "Total power: " + (int)totalPower +" W";
+            powerMeter1.value = (int)totalPower;
 
             // update the fastest bicycle
             double highest = bicycles.Max(x => x.lastPowerReadingA);
@@ -149,7 +154,8 @@ namespace natgeo
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            powerMeterForm.onNewScrollText += (x) => dougScrollingTextCtrl1.SetText(x);
+            powerMeterForm.Show();
         }
 
         private void Form1_Click(object sender, EventArgs e)

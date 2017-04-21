@@ -66,6 +66,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="bicycle.cs" />
+    <Compile Include="bikeDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="bikeDetail.Designer.cs">
+      <DependentUpon>bikeDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="bikeSettings.cs" />
     <Compile Include="cycler.cs">
       <SubType>UserControl</SubType>
@@ -82,6 +88,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUI.Designer.cs">
+      <DependentUpon>frmUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="powerMeter.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -90,11 +102,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="bikeDetail.resx">
+      <DependentUpon>bikeDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="cycler.resx">
       <DependentUpon>cycler.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUI.resx">
+      <DependentUpon>frmUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="powerMeter.resx">
       <DependentUpon>powerMeter.cs</DependentUpon>
