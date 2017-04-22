@@ -107,7 +107,7 @@ namespace natgeo
         {
             // Update total power
             double totalPower = bicycles.Sum(x => x.lastPowerReadingW);
-            lblTotalCurrent.Text = "Total power: " + (int)totalPower +" W";
+            lblTotalCurrent.Text = (int)totalPower +" W";
             //powerMeter1.value = (int)totalPower;
 
             // update the fastest bicycle
@@ -155,8 +155,14 @@ namespace natgeo
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ctlBargraph1.Parent = pbBg;
+            ctlBargraph1.Font = dougScrollingTextCtrl1.Font;
+            pboxTopLeftLogo.Parent = this;
             powerMeterForm.onNewScrollText += (x) => dougScrollingTextCtrl1.SetText(x);
             powerMeterForm.Show();
+            pbBg.Width = this.ClientRectangle.Width;
+            pbBg.Height = this.ClientRectangle.Height;
+            pbBg.SendToBack();
         }
 
         private void Form1_Click(object sender, EventArgs e)
@@ -166,12 +172,35 @@ namespace natgeo
 
         private void Form1_Resize(object sender, EventArgs e)
         {
+            pbBg.Width = this.ClientRectangle.Width;
+            pbBg.Height = this.ClientRectangle.Height;
             //resizeCyclistControls();
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void pboxTopLeftLogo_Paint(object sender, PaintEventArgs e)
+        {
+            //Bitmap logo = Properties.Resources.NAT_Geo_Logo_EarthDayRunSolid;
+            //logo.MakeTransparent(Color.Transparent);
+            //e.Graphics.DrawImage(logo, ClientRectangle);
+        }
+
+        private void tmrUpdateGraph_Tick(object sender, EventArgs e)
+        {
+            // FIXME OMG
+            ctlBargraph1.Top = label1.Height + label1.Top;
+            ctlBargraph1.Left = 10;
+            ctlBargraph1.Width = ClientRectangle.Width - (ctlBargraph1.Left * 2);
+            ctlBargraph1.Height = (ClientRectangle.Height - ctlBargraph1.Top - 10) - (this.Height - pwrMeterOverall.Top);
+
+            pwrMeterOverall.value = (int) bicycles.Sum(x => x.lastPowerReadingW);
+            pwrMeterOverall.maxValue = 1000;
+
+            ctlBargraph1.redrawTimer();
         }
     }
 }

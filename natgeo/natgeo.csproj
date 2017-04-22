@@ -74,7 +74,7 @@
     </Compile>
     <Compile Include="bikeSettings.cs" />
     <Compile Include="ctlBargraph.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ctlBargraph.Designer.cs">
       <DependentUpon>ctlBargraph.cs</DependentUpon>

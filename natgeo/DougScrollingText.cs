@@ -47,6 +47,8 @@ namespace DougScrollingText
         /// </summary>
         public DougScrollingTextCtrl()
         {
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+
             _timer = new Timer();
 
             // Set the timer speed and properties.
@@ -152,7 +154,7 @@ namespace DougScrollingText
             {
                 path.AddRectangle(ClientRectangle);
 
-                using (SolidBrush bgBrush = new SolidBrush(Color.White))
+                using (SolidBrush bgBrush = new SolidBrush(Color.Brown))
                 {
                     using (PathGradientBrush myBrush = new PathGradientBrush(path))
                     {
@@ -165,9 +167,10 @@ namespace DougScrollingText
                             {
                                 using (BufferedGraphics gfx = BufferedGraphicsManager.Current.Allocate(dblBuf, ClientRectangle))
                                 {
-                                    gfx.Graphics.FillRectangle(bgBrush, ClientRectangle);
-                                    gfx.Graphics.DrawString(sScrollText, myFont, myBrush, -scrollOffsetPixels, 0);
-                                    gfx.Render(pe.Graphics);
+                                    //gfx.Graphics.FillRectangle(bgBrush, ClientRectangle);
+                                    pe.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
+                                    pe.Graphics.DrawString(sScrollText, myFont, myBrush, -scrollOffsetPixels, 0);
+                                    //gfx.Render(pe.Graphics);
                                 }
                             }
                             base.OnPaint(pe);

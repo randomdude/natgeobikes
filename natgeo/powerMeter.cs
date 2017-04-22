@@ -60,9 +60,12 @@ namespace natgeo
 
         private void powerMeter_Paint(object sender, PaintEventArgs e)
         {
-            int redSize = this.Width / 3;
-            int yellowSize = redSize;
-            int greenSize = redSize;
+            if (maxValue == 0 || this.Width == 0)
+                return;
+
+            int redSize = (int)(((float)this.Width / (float)this.maxValue) * 300);
+            int yellowSize = (int)(((float)this.Width / (float)this.maxValue) * 100);
+            int greenSize = (int)(((float)this.Width / (float)this.maxValue) * 600);
 
             // Draw BG
             e.Graphics.FillRectangle(bgRed, 0, 0, redSize, this.Height);
@@ -73,7 +76,7 @@ namespace natgeo
             if (maxValue == 0 || value == 0)
                 return;
 
-            int valueScaled = (int)((Double)this.Width * ((Double)value / (Double)maxValue));
+            int valueScaled = (int)(this.Width * ((Double)value / maxValue));
 
             int redFGSize = valueScaled;
             int yellowFGSize = valueScaled - redSize;
