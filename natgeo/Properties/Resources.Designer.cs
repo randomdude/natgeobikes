@@ -89,5 +89,35 @@ namespace natgeo.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NAT_Geo_Logo {
+            get {
+                object obj = ResourceManager.GetObject("NAT_Geo_Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NAT_Geo_Logo_EarthDayRunSolid {
+            get {
+                object obj = ResourceManager.GetObject("NAT_Geo_Logo_EarthDayRunSolid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NAT_Geo_LogoEarthDayRunTransparent {
+            get {
+                object obj = ResourceManager.GetObject("NAT_Geo_LogoEarthDayRunTransparent", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
